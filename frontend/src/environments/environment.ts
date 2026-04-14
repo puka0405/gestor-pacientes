@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  apiURL: 'http://127.0.0.1:5000/api',
+  apiURL: 'https://gestor-pacientes-hqib.onrender.com/api',
   firebaseConfig: {
     apiKey: 'AIzaSyDnwaISR5-J4oqI4qkzp8rZ1m-bUBohHfM',
     authDomain: 'gestion-pacientes-ac4db.firebaseapp.com',
