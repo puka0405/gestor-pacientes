@@ -1,0 +1,116 @@
+<div class="container mt-4">
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Gestión de Citas</h2>
+
+    <div *ngIf="user$ | async as user">
+      <span class="me-3">{{ user.displayName }}</span>
+      <button class="btn btn-outline-danger" (click)="logout()">Cerrar sesión</button>
+    </div>
+  </div>
+
+  <!-- FORM -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <h4>{{ editingId ? 'Editar' : 'Nueva' }} Cita</h4>
+    </div>
+
+    <div class="card-body">
+      <form [formGroup]="citaForm" (ngSubmit)="onSubmit()">
+
+        <div class="row">
+
+          <div class="col-md-6 mb-3">
+            <label>Fecha y hora</label>
+            <input type="datetime-local" class="form-control" formControlName="fechaHora">
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label>Motivo</label>
+            <input type="text" class="form-control" formControlName="motivo">
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label>Paciente</label>
+            <select class="form-control" formControlName="pacienteId">
+              <option *ngFor="let p of pacientes" [value]="p.id">
+                {{ p.nombre }}
+              </option>
+            </select>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label>Doctor</label>
+            <select class="form-control" formControlName="doctorId">
+              <option *ngFor="let d of doctores" [value]="d.id">
+                {{ d.nombre }} {{ d.apellidos }}
+              </option>
+            </select>
+          </div>
+
+        </div>
+
+        <button class="btn btn-primary">
+          {{ editingId ? 'Actualizar' : 'Guardar' }}
+        </button>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- LISTA -->
+  <div class="card">
+    <div class="card-header">
+      <h4>Citas ({{ citas.length }})</h4>
+    </div>
+
+    <div class="card-body">
+
+      <table class="table table-striped">
+
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Motivo</th>
+            <th>Paciente</th>
+            <th>Doctor</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <tr *ngFor="let cita of citas">
+
+            <td>{{ cita.fechaHora | date:'dd/MM/yyyy HH:mm' }}</td>
+            <td>{{ cita.motivo }}</td>
+
+            <td>{{ getPacienteNombre(cita.pacienteId) }}</td>
+            <td>{{ getDoctorNombre(cita.doctorId) }}</td>
+
+            <td>
+              <button class="btn btn-warning btn-sm" (click)="editCita(cita)">
+                Editar
+              </button>
+
+              <button class="btn btn-danger btn-sm" (click)="deleteCita(cita.id)">
+                Eliminar
+              </button>
+            </td>
+
+          </tr>
+
+          <tr *ngIf="citas.length === 0">
+            <td colspan="5" class="text-center">
+              No hay citas registradas
+            </td>
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+  </div>
+
+</div>
