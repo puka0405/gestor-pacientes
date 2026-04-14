@@ -13,7 +13,7 @@ def create_app():
     db.init_app(app)
     migrate.init_app(app, db)
 
-    CORS(app, resources={r"/api/*": {"origins": "*"}})
+    CORS(app)
 
     app.register_blueprint(pacientes.bp)
     app.register_blueprint(doctores.bp)
